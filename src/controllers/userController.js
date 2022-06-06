@@ -1,5 +1,81 @@
 const User = require('../models/User')
+const createToken = require('../services/createToken')
 const userController = {}
+
+userController.login = async (req, res, next)=>{
+    try{
+       
+        const {email, password} = req.body
+        const user = await User.findOne({email})
+        if(!user){
+            const error = new Error("Email no registrado")
+            res.status(404)
+            return next(error)
+        }
+
+        const match = await user.matchPassword(password)
+
+        if(!match){
+            const error = new Error("Contraseña incorrecta")
+            res.status(401)
+            return next(error)
+        }
+
+        const token = createToken(user._id,email )
+
+        return res.status(200).json({
+            message:"Ha iniciado sesión",
+            token})
+
+
+    }catch(error){
+        next(error)
+    }
+}
+
+userController.register = async (req, res, next) => {
+    try {
+        const body = req.body
+        const userToCreated = await User.find({ "email": body.email })
+
+        if (userToCreated.length > 0) {
+            const error = new Error("Email en uso")
+            res.status(401)
+            return next(error)
+
+        }
+        const user = new User(body)
+        const newPassword = await user.encryptPassword(body.password)
+        user.password = newPassword
+        const userSaved = await user.save()
+        const token = createToken(userSaved._id, userSaved.email)
+        return res.status(201).json({
+            message: "Ha sido registrado",
+            user: userSaved,
+            token
+        })
+
+    } catch (error) {
+        console.log(error)
+        next(error)
+    }
+}
+
+userController.getUser = async (req, res, next) => {
+    try {
+        const id = req.params.id
+        const user = await User.findById(id)
+        if(!user){
+            const error = new Error("Este usuario no existe")
+            res.status(404)
+           return next(error)
+        }
+        return res.status(200).json({user})
+    } catch (error) {
+        
+        next(error)
+    }
+}
 
 
 userController.getAllUsers = async (req, res, next) => {
@@ -33,7 +109,7 @@ userController.createUser = async (req, res, next) => {
         if (userToCreated.length > 0) {
             const error = new Error("Email en uso")
             res.status(400)
-            next(error)
+            return next(error) 
 
         }
         const user = new User(body)

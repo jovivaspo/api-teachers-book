@@ -16,7 +16,9 @@ app.use(helmet())
 app.use(express.json())
 
 app.use('/api/admin',require('./routes/admin'))
-app.use('/api/users',require('./routes/users'))
+app.use('/api/user',require('./routes/users'))
+app.use('/api/note',require('./routes/notes'))
+
 
 app.use(notFound)
 app.use(handleError)

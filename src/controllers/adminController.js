@@ -1,6 +1,6 @@
 const Admin = require("../models/Admin")
-const jwt = require("jsonwebtoken")
-const config = require('../config')
+const createToken = require("../services/createToken")
+
 
 const adminController = {}
 
@@ -20,9 +20,9 @@ const adminController = {}
                 return next(error)
             }
             const {id} = admin._id
-            const  token = jwt.sign({id,email},config.KEY,{
-                expiresIn: 86400,
-            })
+
+            const token = createToken(id,email)
+           
             return res.status(200).json({token})
         }
 
