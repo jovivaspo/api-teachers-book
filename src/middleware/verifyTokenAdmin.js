@@ -16,6 +16,14 @@ const verifyTokenAdmin = async ( req, res, next) => {
             const error = new Error("Token invalido")
            return next(error)
         }
+
+        if(Date.now() >= decodedToken.exp * 1000){
+            res.status(401)
+            const error = new Error("Token experado")
+            return next(error)
+        }
+
+        console.log(decodedToken)
     
         const admin = await Admin.findOne({email:decodedToken.email})
     

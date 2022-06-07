@@ -4,6 +4,11 @@ const noteSchema = new Schema({
         type: String,
         required: [true, "Tipo de nota es requerido"]
     },
+    title:{
+        type: String,
+        required:true,
+        trim:true
+    },
     user: {
         type: Schema.Types.ObjectId, ref: 'User',
         required: true

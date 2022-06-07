@@ -55,4 +55,11 @@ userSchema.methods.matchPassword = async function(password){
     return await bcrypt.compare(password,this.password)
 }
 
+userSchema.set('toJSON',{
+    transform:(document, returnObject) =>{
+        delete returnObject.__v
+        delete returnObject.password
+    }
+})
+
 module.exports =  models.User || model("User",userSchema)

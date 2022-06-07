@@ -2,3 +2,6 @@ dev.env
 production.env
 /node_modules
 admin.http
+user.http
+notes.http
+/requests

@@ -16,6 +16,12 @@ const verifyTokenUser = async ( req, res, next) => {
             const error = new Error("Token invalido")
            return next(error)
         }
+
+        if(Date.now() >= decodedToken.exp * 1000){
+            res.status(401)
+            const error = new Error("Token experado")
+            return next(error)
+        }
     
         const user = await User.findOne({email:decodedToken.email})
         
@@ -27,6 +33,7 @@ const verifyTokenUser = async ( req, res, next) => {
         
         console.log("Token valido")
         next()
+        
     }catch(error){
         res.status(401)
         return next(error)

@@ -80,6 +80,7 @@ userController.getUser = async (req, res, next) => {
 
 userController.getAllUsers = async (req, res, next) => {
     try {
+        //console.log(req.connection.remoteAddress)
         const users = await User.find()
         if (users.length === 0) return res.status(200).json({ message: "No hay usuarios" })
         return res.status(200).json(users)
@@ -137,7 +138,8 @@ userController.deleteUser = async (req, res, next) => {
             next(error)
         } else {
             await User.findByIdAndDelete(id)
-            return res.status(200).json({
+            await Note.findMany({"_id_user": id})
+            return res.status(202).json({
                 message:"Usuario eliminado"
             })
         }

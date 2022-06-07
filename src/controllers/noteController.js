@@ -4,15 +4,7 @@ const User = require('../models/User')
 
 const noteController = {}
 
-noteController.getAll = async (req, res, next) =>{
-    try{
-        const notes = await Note.find()
-        res.status(200).json(notes)
-    }catch(error){
-        res.status(500)
-        next(error)
-    }
-}
+
 
 noteController.createNote = async (req, res, next) => {
     try {
@@ -20,11 +12,11 @@ noteController.createNote = async (req, res, next) => {
 
         const user = await User.findById(id_user)
 
-        const {type, name, description, date }= req.body
+        const {type, title, description, date }= req.body
 
         const newNote = new Note({
             type,
-            name,
+            title,
             description,
             date,
             user: user._id
@@ -57,12 +49,13 @@ noteController.getAllNotes = async (req, res, next) => {
     try {
         const id_user = req.params.id_user
         const notes = await Note.find({ "_id_user": id_user })
-        if (notes.length === 0) return res.status(200).json({ message: "Ninguna nota creada" })
+        if (notes.length === 0) return res.status(200).json({ message: "Usuario sin notas" })
         return res.status(200).json(notes)
     } catch (error) {
         next(error)
     }
 }
+
 noteController.getNote = async (req, res, next) => {
     try {
         const id_note = req.params.id_note
@@ -78,7 +71,20 @@ noteController.getNote = async (req, res, next) => {
     }
 }
 noteController.updateNote = async (req, res, next) => {
+    try{
+        const id_note = req.params.id_note
 
+        const note = await Note.findByIdAndUpdate(id_note,req.body)
+
+        await note.save()
+
+        return res.status(202).json({message:"Nota actualizada"})
+
+
+    }catch(error){
+        return next(error)
+    }
+  
 }
 noteController.deleteNote = async (req, res, next) => {
     try {
@@ -102,7 +108,7 @@ noteController.deleteNote = async (req, res, next) => {
 
          await user.save()
 
-        return res.status(202).json({messaage:"Nota borrada"})
+        return res.status(202).json({message:"Nota borrada"})
 
     } catch (error) {
         res.status(500)
@@ -128,6 +134,29 @@ noteController.deleteAllNotes = async (req, res, next) => {
 
 
     } catch (error) {
+        res.status(500)
+        next(error)
+    }
+}
+
+noteController.getAll = async (req, res, next) =>{
+    try{
+        const notes = await Note.find()
+        if(notes.length === 0) return res.status(200).json({message:"No existen notas"})
+        res.status(200).json(notes)
+    }catch(error){
+        res.status(500)
+        next(error)
+    }
+}
+
+noteController.deleteAll = async (req, res, next) =>{
+    try{
+        const notes = await Note.find()
+        if(notes.length === 0) return res.status(200).json({message:"No existen notas en la BD"})
+        await Note.deleteMany({})
+        res.status(200).json({message:"Todas las notas fueron eliminadas"})
+    }catch(error){
         res.status(500)
         next(error)
     }
