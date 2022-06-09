@@ -16,6 +16,10 @@ const userSchema = new Schema({
         type:String,
         required:[true,"Contraseña requerida"],
     },
+    verified:{
+        type:String,
+        default:"Not verified"
+    },
     school:{
         required:false,
         name:{
