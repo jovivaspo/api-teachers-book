@@ -1,6 +1,6 @@
 const config = require('./config')
 const express = require('express')
-const cors = require('express')
+const cors = require('cors')
 const helmet = require('helmet')
 const notFound = require('./middleware/notFound')
 const handleError = require('./middleware/handleError')
