@@ -22,8 +22,13 @@ const adminController = {}
             const {id} = admin._id
 
             const token = createToken(id,email)
+
+            console.log("Ha iniciado sesión como administrador")
            
-            return res.status(200).json({token})
+            return res.status(200).json({
+                token,
+                message:'Bienvenido al panel de control'
+            })
         }
 
      }catch(error){

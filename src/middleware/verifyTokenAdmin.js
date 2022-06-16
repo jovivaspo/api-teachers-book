@@ -19,7 +19,7 @@ const verifyTokenAdmin = async ( req, res, next) => {
 
         if(Date.now() >= decodedToken.exp * 1000){
             res.status(401)
-            const error = new Error("Token experado")
+            const error = new Error("Token expirado")
             return next(error)
         }
 
