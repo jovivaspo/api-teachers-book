@@ -23,7 +23,7 @@ const verifyTokenAdmin = async ( req, res, next) => {
             return next(error)
         }
 
-        console.log(decodedToken)
+        //console.log(decodedToken)
     
         const admin = await Admin.findOne({email:decodedToken.email})
     

@@ -173,7 +173,7 @@ userController.getAllUsers = async (req, res, next) => {
     try {
         //console.log(req.connection.remoteAddress)
         const users = await User.find()
-        if (users.length === 0) return res.status(200).json({ message: "No hay usuarios" })
+        //if (users.length === 0) return res.status(200).json({ message: "No hay usuarios" })
         return res.status(200).json(users)
     } catch (err) {
         const error = new Error(err.message)
