@@ -12,7 +12,7 @@ const verifyTokenAdmin = async (req, res, next) => {
          jwt.verify(token, config.KEY, async (err, decodedToken) => {
             if (err) {
                 res.status(401)
-                const error = new Error(err)
+                const error = new Error(err.name)
                 return next(error)
             }
             const admin = await Admin.findOne({ email: decodedToken.email })
