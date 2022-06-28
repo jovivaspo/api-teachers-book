@@ -11,7 +11,7 @@ module.exports = {
     NODE_ENV : process.env.NODE_ENV,
     PORT : process.env.PORT,
     URI_MONGO: process.env.URI_MONGO,
-    EMAIL: process.env.EMAIL,
+    EMAIL_ADMIN: process.env.EMAIL_ADMIN,
     PASSWORD: process.env.PASSWORD,
     KEY : process.env.KEY,
     EMAIL: process.env.EMAIL,

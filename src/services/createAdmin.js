@@ -4,11 +4,11 @@ const Admin = require('../models/Admin')
 const createAdmin = async (config) => {
     try{
        
-        const admin = await Admin.findOne({email:config.EMAIL})
+        const admin = await Admin.findOne({email:config.EMAIL_ADMIN})
 
         if(!admin){
           const admin =   new Admin({
-              email:config.EMAIL,
+              email:config.EMAIL_ADMIN,
               password: config.PASSWORD
           })
 
