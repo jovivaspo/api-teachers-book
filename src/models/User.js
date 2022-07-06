@@ -26,16 +26,16 @@ const userSchema = new Schema({
             type:String
         },
         cp:{
-            type:Number
+            type:String
         },
         location:{
             type:String
         },
         tel:{
-            type:Number
+            type:String
         },
         cc:{
-            type:Number
+            type:String
         },
         email:{
             type:String

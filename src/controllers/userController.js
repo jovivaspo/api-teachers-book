@@ -30,8 +30,8 @@ userController.login = async (req, res, next) => {
             return next(error)
         }
 
-      
-        if(user.verified === "Not verified"){
+
+        if (user.verified === "Not verified") {
             res.status(401)
             const error = new Error("Debe confirmar su cuenta, mire su correo")
             console.log("Debe confirmar su cuenta, mire su correo")
@@ -123,16 +123,16 @@ userController.confirm = async (req, res, next) => {
 
 userController.resendEmail = async (req, res, next) => {
 
-    try{
+    try {
 
         const email = req.body.email
 
-        const user = await User.findOne({email})
+        const user = await User.findOne({ email })
 
-        if(!user){
+        if (!user) {
             const error = new Error("Email no registrado")
             res.status(401)
-           return  next(error)
+            return next(error)
         }
 
         const token = createToken(user._id, email)
@@ -143,7 +143,7 @@ userController.resendEmail = async (req, res, next) => {
             message: "Correo de confirmación reenviado",
         })
 
-    }catch(error){
+    } catch (error) {
         console.log(error)
         next(error)
     }
@@ -247,8 +247,11 @@ userController.updateUser = async (req, res, next) => {
         const id = req.params.id
         const body = req.body
         const userUpdated = await User.findByIdAndUpdate(id, body)
-        return res.status(202).json({ message: "Usuario actualizado" })
-    } catch (err) {
+        return res.status(202).json({
+            message: "Usuario actualizado",
+            userUpdated
+        })
+    } catch (error) {
         console.log(error)
         next(error)
     }
